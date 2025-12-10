@@ -64,6 +64,19 @@ class MainActivity : ComponentActivity() {
             val dataViewModel:DataViewModel by viewModels()
             dataViewModel.logstateFunction()
             dataViewModel.incrementcounter()
+            val result = SealedErrorOPeration();
+            result.onSuccess {
+                data -> Log.d(TAG, "SUCCESS ${data}")
+            }
+            result.onFailure {
+                action ->
+                val error = action as AppError
+                when(error){
+                    is AppError.Unexpected -> Log.d(TAG, "unexpected error")
+                    is AppError.ServerError -> Log.d(TAG, "ServerError")
+                    is AppError.Validation -> Log.d(TAG, "Validation")
+                }
+            }
         }
     }
 }
